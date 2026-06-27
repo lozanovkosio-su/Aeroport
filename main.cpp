@@ -1,4 +1,7 @@
 #include <iostream>
+#include "Engine.h"
+
+
 
 int main() {
     //clone
@@ -11,4 +14,6 @@ int main() {
     //list runaway v disp
     //send to hangar uvelichava health
     //da dovursha undo
+    Engine s = Engine::getInstance();
+    s.start();
 }

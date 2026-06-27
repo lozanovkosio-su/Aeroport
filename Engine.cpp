@@ -15,6 +15,8 @@ std::vector<AvioCompany> Engine::airlines = {};
 
 bool checkCommandSize(int num, int size) {
     if (num == size) {
+        std::cout<<std::endl;
+        std::cout << "Command taken" <<std::endl;
         return false;
     }
     return true;
@@ -52,11 +54,12 @@ void Engine::start() {
                     currentUser = ptr;
                 }
             }
+            std::print("Succesfuly logged in user: {}", name);
         }else if (command == "load" && currentUser == nullptr && !isStarted) {
             isStarted = true;
             std::ifstream file("airport_data.txt");
             if (file.peek() == std::ifstream::traits_type::eof()){
-                std::cout << "Nothing saved, starting a new one";
+                std::cout << "Nothing saved, starting a new one" <<std::endl;
                 continue;
             }
             int flightsCount;
@@ -137,6 +140,7 @@ void Engine::start() {
             Engine::users.clear();
             Engine::hangars.clear();
             Engine::airlines.clear();
+            std::cout << "System saved";
         }else if (command == "register" && currentUser == nullptr) {
             if (checkCommandSize(4, inputParts.size())){std::cout<<"Invalid Command";continue;}
             std::string name = inputParts[1];
@@ -161,6 +165,7 @@ void Engine::start() {
                              "unexisting position - please try again";
                 continue;
             }
+            std::print("User {} succesfuly registered", name);
         }else if (command == "logout" && currentUser!=nullptr) {
             currentUser = nullptr;
             std::cout << "Logged out succesfuly!";
@@ -174,6 +179,7 @@ void Engine::start() {
                 continue;
             }
             psg->addFunds(amaount);
+            std::print("{} EUR added", inputParts[1]);
         }else if (command == "list-flights" && currentUser->getRole() == Role::traveler) {
             if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
             std::shared_ptr<Passenger> psg = std::static_pointer_cast<Passenger>(currentUser);
@@ -189,12 +195,14 @@ void Engine::start() {
             }else if (command == "upgrade-ticket") {
                 if (checkCommandSize(3, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 psg->upgradeTicket(inputParts[1], inputParts[2]);
+                std::print("You upgraded your ticket to {}",inputParts[2]);
             }else if (command == "add-baggage") {
                 if (checkCommandSize(3, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 psg->addBagggage(inputParts[1], std::stoi(inputParts[2]));
             }else if (command == "cancel-ticket") {
                 if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 psg->cancelTicket(inputParts[1]);
+                std::print("You sucesfully cancelled ticket for flight: {}", inputParts[1]);
             }
             //mytickets
         }else if (currentUser->getRole() == Role::admin) {
@@ -242,6 +250,7 @@ void Engine::start() {
                         std::stoi(inputParts[2]),
                         std::nullopt,std::nullopt);
                 }
+                std::print("You succesfully builded {} runaway",inputParts[1]);
             }else if (command == "build-hangar") {
                 if (checkCommandSize(4, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 admin.buildHangar(inputParts[1], std::stoi(inputParts[2]),
@@ -249,6 +258,7 @@ void Engine::start() {
             }else if (command == "close-runaway") {
                 if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 admin.closeRunway(inputParts[1]);
+                std::print("You succesfuly closed runaway: {}",inputParts[1]);
             }else if (command == "set-weather") {
                 if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 admin.setTime(inputParts[1]);
@@ -263,12 +273,14 @@ void Engine::start() {
             }else if (command == "assign-runaway") {
                 if (checkCommandSize(3, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 dis->assignRunaway(inputParts[1],std::stoi(inputParts[2]));
+                std::print("You succesfully assigned flight {} to {}", inputParts[1],inputParts[2]);
             }else if (command == "delay-flight") {
                 if (checkCommandSize(3, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 dis->delayFlight(inputParts[1]);
             }else if (command == "free-runaway") {
                 if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 dis->freeRunaway(std::stoi(inputParts[1]));
+                std::print("You succesfully freed runaway {}", inputParts[1]);
             }
         }else if (command == "end") {
             break;
