@@ -12,6 +12,7 @@ public:
     int requiredLenght() const override;
     void decreaseHealth() override;
     double getTax() const override;
+    std::unique_ptr<Plane> clone() const override;
 };
 
 

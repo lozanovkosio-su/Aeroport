@@ -18,3 +18,7 @@ void CargoPlane::decreaseHealth() {
 double CargoPlane::getTax() const {
     return 15*capacity;
 }
+
+std::unique_ptr<Plane> CargoPlane::clone() const {
+    return std::make_unique<CargoPlane>(*this);
+}

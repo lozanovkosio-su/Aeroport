@@ -21,9 +21,12 @@ class AvioCompany {
     std::vector<std::shared_ptr<Flight>> listOfFlights;
 
 public:
+    AvioCompany() = default;
     AvioCompany(const std::string& name, double initialBalance);
     void setBalance(double newB);
     bool chechFlight(std::shared_ptr<Flight>& flight) const;
+    friend std::ostream& operator<<(std::ostream& os, const AvioCompany& ac);
+    friend std::istream& operator>>(std::istream& is, AvioCompany& ac);
 };
 
 

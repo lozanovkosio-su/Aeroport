@@ -19,6 +19,7 @@ void Engine::start() {
     Admin admin = Admin::getInstance();
     Engine::users.push_back(std::make_unique<Admin>(admin));
     std::shared_ptr<User> currentUser = nullptr;
+    bool isStarted = false;
     while (true) {
         std::string input;
         std::getline(std::cin, input);
@@ -37,7 +38,7 @@ void Engine::start() {
             inputParts.push_back(word);
         }
         std::string command = inputParts[0];
-        if (command == "login" && currentUser==nullptr) {
+        if (command == "login" && currentUser==nullptr && isStarted) {
             if (checkCommandSize(3, inputParts.size())){std::cout<<"Invalid Command";continue;}
             std::string name = inputParts[1];
             std::string password = inputParts[2];
@@ -46,15 +47,93 @@ void Engine::start() {
                     currentUser = ptr;
                 }
             }
-        }else if (command == "load" && currentUser == nullptr) {
+        }else if (command == "load" && currentUser == nullptr && !isStarted) {
+            isStarted = true;
             std::ifstream file("airport_data.txt");
             if (file.peek() == std::ifstream::traits_type::eof()){
                 std::cout << "Nothing saved, starting a new one";
                 continue;
             }
+            int flightsCount;
+            file >> flightsCount;
+            for (int i = 0; i < flightsCount;i++) {
+                Flight flight{};
+                file >> flight;
+                std::shared_ptr<Flight> ptr = std::make_shared<Flight>(flight);
+                Engine::flights.push_back(ptr);
+            }
+            int runawaysCount;
+            file >> runawaysCount;
+            for (int i = 0; i < runawaysCount; i++) {
+                Runaway runaway{};
+                file >> runaway;
+                Engine::runaways.push_back(runaway);
+            }
+            int hangarsCount;
+            file >> hangarsCount;
+            for (int i = 0; i < hangarsCount; i++) {
+                Hangar hangar{};
+                file >> hangar;
+                Engine::hangars.push_back(hangar);
+            }
+            int airlinesCount;
+            file >> airlinesCount;
+            for (int i = 0; i < airlinesCount; i++) {
+                AvioCompany company{};
+                file >> company;
+                Engine::airlines.push_back(company);
+            }
+            int usersCount;
+            if (file >> usersCount) {
+                for (int i = 0; i < usersCount; i++) {
+                    std::string tName, tPass;
+                    int tRoleInt;
+
+                    if (file >> std::quoted(tName) >> std::quoted(tPass) >> tRoleInt) {
+                        Role role = static_cast<Role>(tRoleInt);
+
+                        if (role == Role::traveler) {
+                            double tBalance = 0.0;
+                            file >> tBalance; // Четем запазените пари от файла!
+                            Engine::users.push_back(std::make_shared<Passenger>(tName, tPass, role, tBalance));
+                        }
+                        else if (role == Role::dispetcher) {
+                            Engine::users.push_back(std::make_shared<Dispatcher>(tName, tPass, role));
+                        }
+                        else if (role == Role::admin) {
+                        }
+                    }
+                }
+            }
+        }else if (!isStarted) {
+            std::cout << "You have to load first";continue;
         }else if (command == "save" && currentUser == nullptr) {
             std::ofstream file("airport_data.txt");
-
+            file << Engine::flights.size() << std::endl;
+            for (std::shared_ptr<Flight>& ptr : Engine::flights) {
+                file << *ptr << std::endl;
+            }
+            file << Engine::runaways.size() << std::endl;
+            for (const Runaway& r : Engine::runaways) {
+                file << r << std::endl;
+            }
+            file << Engine::hangars.size() << std::endl;
+            for (const Hangar& h : Engine::hangars) {
+                file << h << std::endl;
+            }
+            file << Engine::users.size() << std::endl;
+            for (const std::shared_ptr<User>& ptr : Engine::users) {
+                file << *ptr << std::endl;
+            }
+            file << Engine::airlines.size() << std::endl;
+            for (const AvioCompany& comp : Engine::airlines) {
+                file << comp << std::endl;
+            }
+            Engine::flights.clear();
+            Engine::runaways.clear();
+            Engine::users.clear();
+            Engine::hangars.clear();
+            Engine::airlines.clear();
         }else if (command == "register" && currentUser == nullptr) {
             if (checkCommandSize(4, inputParts.size())){std::cout<<"Invalid Command";continue;}
             std::string name = inputParts[1];
@@ -73,7 +152,7 @@ void Engine::start() {
             if (role == "Passenger") {
                 users.push_back(std::make_shared<Passenger>(name,password,Role::traveler));
             }else if (role == "Dispatcher") {
-                users.push_back(std::make_shared<Passenger>(name,password,Role::dispetcher));
+                users.push_back(std::make_shared<Dispatcher>(name,password,Role::dispetcher));
             }else {
                 std::cout << "You are trying to register admin or "
                              "unexisting position - please try again";

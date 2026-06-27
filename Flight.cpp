@@ -52,3 +52,42 @@ void Flight::onWeatherChanged(Weather newWeather, bool airportHasIls)  {
         }
     }
 }
+
+#include <iomanip>
+
+std::ostream& operator<<(std::ostream& os, const Flight& f) {
+    os << std::quoted(f.uniqueCode) << ' '
+       << std::quoted(f.destination) << ' '
+       << f.baseTicketPrice << ' '
+       << static_cast<int>(f.status);
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Flight& f) {
+    std::string tCode, tDest;
+    double tPrice;
+    int tStatus;
+
+    if (is >> std::quoted(tCode) >> std::quoted(tDest) >> tPrice >> tStatus) {
+        f.uniqueCode = tCode;
+        f.destination = tDest;
+        f.baseTicketPrice = tPrice;
+        f.status = static_cast<StatusFlight>(tStatus);
+    }
+    return is;
+}
+
+Flight::Flight(const Flight& other)
+    : IWeatherObserver(other), // Копираме базовия клас
+      uniqueCode(other.uniqueCode),
+      listCodes(other.listCodes),
+      destination(other.destination),
+      baseTicketPrice(other.baseTicketPrice),
+      status(other.status),
+      soldTickets(other.soldTickets) // Виж важната бележка по-долу!
+{
+    // Дълбоко копиране на самолета:
+    if (other.plane != nullptr) {
+        plane = other.plane->clone();
+    }
+}

@@ -28,6 +28,7 @@ public:
     virtual ~Plane() = default;
     virtual void decreaseHealth() = 0;
     virtual double getTax() const = 0;
+    virtual std::unique_ptr<Plane> clone() const = 0;
 };
 
 

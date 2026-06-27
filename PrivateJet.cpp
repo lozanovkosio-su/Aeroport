@@ -18,3 +18,7 @@ void PrivateJet::decreaseHealth() {
 double PrivateJet::getTax() const {
     return 5000;
 }
+
+std::unique_ptr<Plane> PrivateJet::clone() const {
+    return std::make_unique<PrivateJet>(*this);
+}

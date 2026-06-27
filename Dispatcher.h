@@ -23,6 +23,8 @@ public:
     void delayFlight(const std::string& flightId);
     void freeRunaway(unsigned id);
     void undo();
+    Dispatcher(const std::string& name_, const std::string& password_, const Role& role_);
+    Dispatcher() = default;
 };
 
 

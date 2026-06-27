@@ -38,6 +38,10 @@ public:
     void setStatu(const StatusFlight& status_);
     void onWeatherChanged(Weather newWeather, bool airportHasIls) override;
      ~Flight() override = default;
+    friend std::ostream& operator<<(std::ostream& os, const Flight& f);
+    friend std::istream& operator>>(std::istream& is, Flight& f);
+    Flight(const Flight& other);
+    Flight() = default;
 };
 
 

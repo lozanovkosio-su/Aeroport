@@ -16,10 +16,28 @@ void AvioCompany::setBalance(double newB) {
 }
 
 bool AvioCompany::chechFlight(std::shared_ptr<Flight> &flight) const{
-    for (std::shared_ptr<Flight>& ptr:listOfFlights) {
+    for (const std::shared_ptr<Flight>& ptr:listOfFlights) {
         if (ptr->getCode() == flight->getCode()) {
             return true;
         }
     }
     return false;
+}
+
+#include <iomanip>
+
+std::ostream& operator<<(std::ostream& os, const AvioCompany& ac) {
+    os << std::quoted(ac.name) << ' ' << ac.firmBalance;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, AvioCompany& ac) {
+    std::string tName;
+    double tBalance;
+
+    if (is >> std::quoted(tName) >> tBalance) {
+        ac.name = tName;
+        ac.firmBalance = tBalance;
+    }
+    return is;
 }

@@ -80,3 +80,8 @@ void Dispatcher::undo() {
         //
     }
 }
+
+Dispatcher::Dispatcher(const std::string &name_, const std::string &password_, const Role &role_)
+    : User(name_, password_, role_)
+{
+}

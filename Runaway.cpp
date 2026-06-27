@@ -45,3 +45,36 @@ bool Runaway::checkIfItHasILS(const Runaway &r1) const{
 unsigned Runaway::getLenght() const {
     return lenght;
 }
+
+std::ostream& operator<<(std::ostream& os, const Runaway& r) {
+    os << r.id << ' '
+       << r.lenght << ' '
+       << static_cast<int>(r.status) << ' '
+       << r.optionals.size();
+
+    for (optionalExtentions opt : r.optionals) {
+        os << ' ' << static_cast<int>(opt);
+    }
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Runaway& r) {
+    int tId, tStatus;
+    unsigned tLen;
+    size_t optSize;
+
+    if (is >> tId >> tLen >> tStatus >> optSize) {
+        r.id = tId;
+        r.lenght = tLen;
+        r.status = static_cast<Status>(tStatus);
+
+        r.optionals.clear();
+        for (size_t i = 0; i < optSize; ++i) {
+            int optVal;
+            is >> optVal;
+            r.optionals.push_back(static_cast<optionalExtentions>(optVal));
+        }
+        r.plane = std::nullopt; // Референции към самолети не се зареждат от текст директно
+    }
+    return is;
+}

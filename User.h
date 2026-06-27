@@ -21,11 +21,14 @@ protected:
     std::vector<std::shared_ptr<Ticket>> tickets;
 
 public:
+    User() = default;
     User(const std::string& name_, const std::string& password_, const Role& role_);
     const std::string& getName() const;
     const std::string& getPass() const;
     const Role& getRole() const;
     const std::vector<std::shared_ptr<Ticket>>& getTickets() const;
+    friend std::ostream& operator<<(std::ostream& os, const User& u);
+    friend std::istream& operator>>(std::istream& is, User& u);
 };
 
 

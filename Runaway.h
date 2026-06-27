@@ -43,6 +43,8 @@ public:
     std::optional<std::reference_wrapper<Plane>>& getPlane();
     bool checkIfItHasILS(const Runaway& r1) const;
     unsigned getLenght() const;
+    friend std::ostream& operator<<(std::ostream& os, const Runaway& r);
+    friend std::istream& operator>>(std::istream& is, Runaway& r);
 };
 
 

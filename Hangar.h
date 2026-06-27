@@ -16,9 +16,12 @@ class Hangar {
     double sum;
 
 public:
+    Hangar() = default;
     Hangar(const std::string& id,
          unsigned capacity,
          double sum = 0.0);
+    friend std::ostream& operator<<(std::ostream& os, const Hangar& h);
+    friend std::istream& operator>>(std::istream& is, Hangar& h);
 };
 
 

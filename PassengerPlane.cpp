@@ -30,3 +30,6 @@ double Plane::getTax() const {
     }
     return 0.1*tax;
 }
+std::unique_ptr<Plane> PassengerPlane::clone() const {
+    return std::make_unique<PassengerPlane>(*this);
+}
