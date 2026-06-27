@@ -14,7 +14,7 @@ std::vector<std::shared_ptr<User>> Engine::users = {};
 std::vector<AvioCompany> Engine::airlines = {};
 
 bool checkCommandSize(int num, int size) {
-    if (num != size) {
+    if (num == size) {
         return false;
     }
     return true;

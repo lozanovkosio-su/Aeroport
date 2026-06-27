@@ -25,7 +25,6 @@ std::shared_ptr<Ticket> TicketFactory::createT(const std::string &type,
         return std::make_shared<VIPTicket>(name, flightId,TicketType::VIP,
             paidAmaount);
     }else {
-        std::cout << "Such type ticket doesnt exist!" << std::endl;
-        return nullptr;
+        throw std::invalid_argument("No such Ticket");
     }
 }

@@ -45,8 +45,10 @@ void Flight::onWeatherChanged(Weather newWeather, bool airportHasIls)  {
         for (std::shared_ptr<User>& userC : Engine::users) {
             for (const std::shared_ptr<Ticket>& ticketC : userC->getTickets()) {
                 if (ticketC->getName() == ptr->getName()) {
-                    std::shared_ptr<Passenger> psg = std::static_pointer_cast<Passenger>(userC);
-                    psg->setBalance(ticketC->getAmaount());
+                    if (userC->getRole() == Role::traveler) {
+                        std::shared_ptr<Passenger> psg = std::static_pointer_cast<Passenger>(userC);
+                        psg->setBalance(ticketC->getAmaount());
+                    }
                 }
             }
         }

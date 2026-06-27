@@ -96,8 +96,8 @@ void Passenger::bookTicket(const std::string &flightID, const std::string &ticke
     }
     for (std::shared_ptr<Flight>& ptr: Engine::flights) {
         if (ptr->getCode() == flightID) {
-            if (paid*(ptr->getPrice()) <= balance) {flag = true; break;
-            }
+            if (paid*(ptr->getPrice()) <= balance) {flag = true;
+            }else{break;}
             if (ptr->getTickets().size() < (ptr->getPlane())->getCapacity()) {
                 std::shared_ptr<Ticket> pTicket =
                     TicketFactory::createT(ticketType,name, flightID,paid*(ptr->getPrice()));
@@ -123,6 +123,7 @@ void Passenger::cancelTicket(const std::string &flightId) {
     std::shared_ptr<Ticket> currTicket = nullptr;
     //for (std::unique_ptr<Flight>& ptr: Engine::flights) {
     for (int i = 0; i < Engine::flights.size(); i++){
+        bool isTicketInMyTickets = false;
         std::shared_ptr<Flight>& ptr = Engine::flights[i];
         if (ptr->getCode() == flightId) {
             // for (std::shared_ptr<Ticket> tick : tickets) {
