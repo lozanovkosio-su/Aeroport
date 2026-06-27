@@ -125,15 +125,25 @@ void Passenger::cancelTicket(const std::string &flightId) {
     for (int i = 0; i < Engine::flights.size(); i++){
         std::shared_ptr<Flight>& ptr = Engine::flights[i];
         if (ptr->getCode() == flightId) {
-            for (std::shared_ptr<Ticket> tick : tickets) {
+            // for (std::shared_ptr<Ticket> tick : tickets) {
+            //     if (tick->getFlightId() == flightId) {
+            //         isTicketInMyTickets = true;
+            //         currTicket = tick;
+            //         break;
+            //     }
+            // }
+            int index;
+            for (int i = 0;i<tickets.size(); i++) {
+                std::shared_ptr<Ticket> tick = tickets[i];
                 if (tick->getFlightId() == flightId) {
                     isTicketInMyTickets = true;
                     currTicket = tick;
+                    index = i;
                     break;
                 }
             }
             if (!isTicketInMyTickets) {break;}
-            tickets.erase(tickets.begin() + i);
+            tickets.erase(tickets.begin() + index);
             balance += currTicket->getAmaount();
             flag = true;
         }

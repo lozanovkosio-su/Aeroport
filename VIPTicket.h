@@ -10,6 +10,7 @@
 
 
 class VIPTicket : public Ticket{
+public:
     VIPTicket(const std::string& name_, const std::string& flightID_, const TicketType& type_,
             unsigned paidAmaount_);
 };

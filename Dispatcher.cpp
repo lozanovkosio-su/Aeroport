@@ -25,7 +25,9 @@ void Dispatcher::assignRunaway(const std::string &flightId, unsigned runawayId) 
                         std::cout << "Invalid!";
                         return;
                     }
-                    runawayC.getPlane()->get() = *(flightC->getPlane());
+                    if (flightC->getPlane() != nullptr) {
+                        runawayC.getPlane() = std::ref(*(flightC->getPlane()));
+                    }
                     flightC->setStatu(StatusFlight::Boarding);
                     runawayC.setStatus(Status::Occupied);
                     lastCommand = std::make_tuple("assign",runawayC.getId(),flightC->getCode());

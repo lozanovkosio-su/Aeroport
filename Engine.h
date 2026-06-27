@@ -28,7 +28,7 @@ class Engine {
     Engine() = default;
 public:
     void start();
-    Engine& getInstance();
+    static Engine& getInstance();
     static std::vector<std::shared_ptr<Flight>> flights;
     static std::vector<Runaway> runaways;
     static std::vector<Hangar> hangars;

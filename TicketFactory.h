@@ -8,6 +8,8 @@
 #include <string>
 #include "Ticket.h"
 #include <memory>
+#include "LastMinute.h"
+#include "VIPTicket.h"
 
 
 class TicketFactory {

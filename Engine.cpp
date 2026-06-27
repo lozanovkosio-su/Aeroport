@@ -6,7 +6,12 @@
 #include <vector>
 #include "Passenger.h"
 #include <fstream>
-
+#include <iomanip>
+std::vector<std::shared_ptr<Flight>> Engine::flights = {};
+std::vector<Runaway> Engine::runaways = {};
+std::vector<Hangar> Engine::hangars = {};
+std::vector<std::shared_ptr<User>> Engine::users = {};
+std::vector<AvioCompany> Engine::airlines = {};
 
 bool checkCommandSize(int num, int size) {
     if (num != size) {
@@ -93,9 +98,7 @@ void Engine::start() {
                         Role role = static_cast<Role>(tRoleInt);
 
                         if (role == Role::traveler) {
-                            double tBalance = 0.0;
-                            file >> tBalance; // Четем запазените пари от файла!
-                            Engine::users.push_back(std::make_shared<Passenger>(tName, tPass, role, tBalance));
+                            Engine::users.push_back(std::make_shared<Passenger>(tName, tPass, role));
                         }
                         else if (role == Role::dispetcher) {
                             Engine::users.push_back(std::make_shared<Dispatcher>(tName, tPass, role));
@@ -267,6 +270,11 @@ void Engine::start() {
                 if (checkCommandSize(2, inputParts.size())){std::cout<<"Invalid Command";continue;}
                 dis->freeRunaway(std::stoi(inputParts[1]));
             }
+        }else if (command == "end") {
+            break;
+        }else {
+            std::cout << "Invalid Command" <<std::endl;
+            continue;
         }
     }
 }

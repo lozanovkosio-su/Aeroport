@@ -7,6 +7,8 @@
 #include <string>
 #include <memory>
 #include "StandartTicket.h"
+#include "LastMinute.h"
+#include "VIPTicket.h"
 
 
 std::shared_ptr<Ticket> TicketFactory::createT(const std::string &type,
@@ -17,10 +19,10 @@ std::shared_ptr<Ticket> TicketFactory::createT(const std::string &type,
             paidAmaount);
     }
     else if (type == "LastMinute") {
-        return std::make_shared<StandartTicket>(name, flightId,TicketType::LastMinute,
+        return std::make_shared<LastMinute>(name, flightId,TicketType::LastMinute,
             paidAmaount);
     }else if (type == "VIP") {
-        return std::make_shared<StandartTicket>(name, flightId,TicketType::VIP,
+        return std::make_shared<VIPTicket>(name, flightId,TicketType::VIP,
             paidAmaount);
     }else {
         std::cout << "Such type ticket doesnt exist!" << std::endl;

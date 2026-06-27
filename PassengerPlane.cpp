@@ -19,7 +19,7 @@ void PassengerPlane::decreaseHealth() {
 }
 
 
-double Plane::getTax() const {
+double PassengerPlane::getTax() const {
     double tax = 0;
     for (std::shared_ptr<Flight>& ptr:Engine::flights) {
         if (ptr->getCode() == id) {

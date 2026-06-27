@@ -3,6 +3,7 @@
 //
 
 #include "Runaway.h"
+std::vector<int> Runaway::ids = {};
 
 Runaway::Runaway(int id_,unsigned length,
                  Status status,
